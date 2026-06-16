@@ -1,0 +1,11 @@
+Latency Type
+16.3105 eyeclose  
+38.0078 eyeclose   
+61.3965 eyeclose   
+81.4414 eyeclose  
+101.0195 eyeclose
+27.0781 eyeopen
+50.1504 eyeopen
+71.6504 eyeopen
+91.6016 eyeopen
+111.0117 eyeopen
