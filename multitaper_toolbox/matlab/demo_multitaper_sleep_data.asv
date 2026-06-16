@@ -1,0 +1,43 @@
+clear all; close all; clc;
+
+Fs = 100;
+frequency_range=[0 25]; %Limit frequencies from 0 to 25 Hz
+taper_params1=[10 1]; %Time bandwidth and number of tapers
+taper_params9=[10 19]; %Time bandwidth and number of tapers
+window_params=[10 5]; %Window size is 4s with step size of 1s
+min_nfft=0; %No minimum nfft
+detrend_opt='linear'; %detrend each window by subtracting the average
+weighting='unity'; %weight each taper at 1
+plot_on=true; %plot spectrogram
+verbose=false; %print extra info
+
+%Generate sample chirp data
+% t=1/Fs:1/Fs:600; %Create 10 minutes of data
+% f_start=1;f_end=20; % Set chirp range in Hz
+% data=chirp(t,f_start,t(end),f_end,'logarithmic');
+
+data = readtable('example_EEG_data.csv');
+data = table2array(data);
+x = data(:,1);
+t = data(:,2);
+
+%Compue the multitaper spectrogram
+figure(1); clf;
+% [spect1,stimes,sfreqs] = multitaper_spectrogram(...
+%     x, Fs, frequency_range, taper_params1, window_params, min_nfft, detrend_opt, weighting, plot_on, verbose);
+[spect1,stimes,sfreqs] = multitaper_spectrogram_mex(...
+    x, Fs, frequency_range, taper_params1, window_params, min_nfft, detrend_opt, weighting, plot_on, verbose);
+set(gca, 'PlotBoxAspectRatio', [2 1 1]);
+set(gcf, 'Color', 'w');
+colormap(jet);
+
+figure(2); clf;
+% [spect9,stimes,sfreqs] = multitaper_spectrogram(...
+%     x,Fs,frequency_range, taper_params9, window_params, min_nfft, detrend_opt, weighting, plot_on, verbose);
+[spect9,stimes,sfreqs] = multitaper_spectrogram_ME(...
+    x,Fs,frequency_range, taper_params9, window_params, min_nfft, detrend_opt, weighting, plot_on, verbose);
+set(gca, 'PlotBoxAspectRatio', [2 1 1]);
+set(gcf, 'Color', 'w')'
+colormap(jet);% figure(1); clf;
+% contourf(stimes, sfreqs, spect, 'linecolor', 'none')
+
